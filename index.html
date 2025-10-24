@@ -107,113 +107,122 @@
   </footer>
 
   <script>
-    const $ = (id) => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
 
-    const state = {
-      op: 'addition',
-      digits: 2,
-      count: 4,
-      nums: [],
-      answer: 0,
-    };
+  const state = {
+    op: 'addition',
+    digits: 2,
+    count: 4,
+    nums: [],
+    answer: 0,
+  };
 
-    const sym = {
-      addition: '+',
-      subtraction: '−',
-      multiplication: '×',
-      division: '÷',
-    };
+  const sym = {
+    addition: '+',
+    subtraction: '−',
+    multiplication: '×',
+    division: '÷',
+  };
 
-    function clamp(n, min, max) {
-      n = Number(n);
-      if (Number.isNaN(n)) return min;
-      return Math.min(max, Math.max(min, n));
+  function clamp(n, min, max) {
+    n = Number(n);
+    if (Number.isNaN(n)) return min;
+    return Math.min(max, Math.max(min, n));
+  }
+
+  function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function makeOperand(digits) {
+    if (digits <= 1) return randInt(1, 9);
+    const min = Math.pow(10, digits - 1);
+    const max = Math.pow(10, digits) - 1;
+    return randInt(min, max);
+  }
+
+  function compute(op, nums) {
+    if (!nums.length) return 0;
+    switch (op) {
+      case 'addition': return nums.reduce((a, b) => a + b, 0);
+      case 'subtraction': return nums.slice(1).reduce((a, b) => a - b, nums[0]);
+      case 'multiplication': return nums.reduce((a, b) => a * b, 1);
+      case 'division': return nums.slice(1).reduce((a, b) => a / b, nums[0]);
     }
+  }
 
-    function randInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+  function makeExpr(op, nums) {
+    return nums.join(` ${sym[op]} `) + ' = ?';
+  }
 
-    function makeOperand(digits) {
-      if (digits <= 1) return randInt(1, 9);
-      const min = Math.pow(10, digits - 1);
-      const max = Math.pow(10, digits) - 1;
-      return randInt(min, max);
-    }
+  function generate() {
+    const nums = Array.from({ length: state.count }, (_, i) => {
+      const n = makeOperand(state.digits);
+      return (state.op === 'division' && i > 0 && n === 0) ? 1 : n;
+    });
+    state.nums = nums;
+    state.answer = compute(state.op, nums);
+    $('expr').textContent = makeExpr(state.op, nums);
+    $('status').textContent = '';
+    $('status').className = 'mt-3 text-sm';
+    $('answerInput').value = '';
+  }
 
-    function compute(op, nums) {
-      if (!nums.length) return 0;
-      switch (op) {
-        case 'addition': return nums.reduce((a, b) => a + b, 0);
-        case 'subtraction': return nums.slice(1).reduce((a, b) => a - b, nums[0]);
-        case 'multiplication': return nums.reduce((a, b) => a * b, 1);
-        case 'division': return nums.slice(1).reduce((a, b) => a / b, nums[0]);
-      }
-    }
-
-    function makeExpr(op, nums) {
-      return nums.join(` ${sym[op]} `) + ' = ?';
-    }
-
-    function generate() {
-      const nums = Array.from({ length: state.count }, (_, i) => {
-        const n = makeOperand(state.digits);
-        return (state.op === 'division' && i > 0 && n === 0) ? 1 : n;
-      });
-      state.nums = nums;
-      state.answer = compute(state.op, nums);
-      $('expr').textContent = makeExpr(state.op, nums);
-      $('status').textContent = '';
-      $('status').className = 'mt-3 text-sm';
-      $('answerInput').value = '';
-    }
-
-    // UI bindings
-    $('startBtn').onclick = () => {
-      state.op = $('op').value;
-      state.digits = clamp($('digits').value, 1, 9);
-      state.count = clamp($('count').value, 1, 9);
-
-      $('opLabel').textContent = sym[state.op];
-      $('digitsLabel').textContent = state.digits;
-      $('countLabel').textContent = state.count;
-
-      $('setup').classList.add('hidden');
-      $('quiz').classList.remove('hidden');
-
+  function nextQuiz() {
+    setTimeout(() => {
       generate();
-    };
+    }, 800); // small delay to let the user see “Correct!” or “Shown.”
+  }
 
-    $('backBtn').onclick = () => {
-      $('quiz').classList.add('hidden');
-      $('setup').classList.remove('hidden');
-    };
+  // UI bindings
+  $('startBtn').onclick = () => {
+    state.op = $('op').value;
+    state.digits = clamp($('digits').value, 1, 9);
+    state.count = clamp($('count').value, 1, 9);
 
-    $('regenBtn').onclick = generate;
+    $('opLabel').textContent = sym[state.op];
+    $('digitsLabel').textContent = state.digits;
+    $('countLabel').textContent = state.count;
 
-    $('checkBtn').onclick = () => {
-      const val = Number($('answerInput').value);
-      let ok;
-      if (state.op === 'division') {
-        const tol = 1e-6 * Math.max(1, Math.abs(state.answer));
-        ok = Math.abs(val - state.answer) <= tol;
-      } else {
-        ok = val === state.answer;
-      }
-      $('status').textContent = ok ? 'Correct!' : 'Try again.';
-      $('status').className = 'mt-3 text-sm ' + (ok ? 'text-emerald-600' : 'text-red-600');
-    };
+    $('setup').classList.add('hidden');
+    $('quiz').classList.remove('hidden');
 
-    $('showBtn').onclick = () => {
-      $('answerInput').value = state.answer;
-      $('status').textContent = 'Shown.';
-      $('status').className = 'mt-3 text-sm text-emerald-600';
-    };
+    generate();
+  };
 
-    // theme toggle
-    $('themeBtn').onclick = () => {
-      document.documentElement.classList.toggle('dark');
-    };
-  </script>
+  $('backBtn').onclick = () => {
+    $('quiz').classList.add('hidden');
+    $('setup').classList.remove('hidden');
+  };
+
+  $('regenBtn').onclick = generate;
+
+  $('checkBtn').onclick = () => {
+    const val = Number($('answerInput').value);
+    let ok;
+    if (state.op === 'division') {
+      const tol = 1e-6 * Math.max(1, Math.abs(state.answer));
+      ok = Math.abs(val - state.answer) <= tol;
+    } else {
+      ok = val === state.answer;
+    }
+    $('status').textContent = ok ? 'Correct!' : 'Try again.';
+    $('status').className = 'mt-3 text-sm ' + (ok ? 'text-emerald-600' : 'text-red-600');
+    if (ok) nextQuiz();
+  };
+
+  $('showBtn').onclick = () => {
+    $('answerInput').value = state.answer;
+    $('status').textContent = 'Shown.';
+    $('status').className = 'mt-3 text-sm text-emerald-600';
+    nextQuiz();
+  };
+
+  // theme toggle
+  $('themeBtn').onclick = () => {
+    document.documentElement.classList.toggle('dark');
+  };
+</script>
+
 </body>
 </html>
