@@ -3,26 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Skye Ten Math Quiz</title>
+  <title>Elementary Math Quiz</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = { darkMode: 'class' };</script>
 </head>
+
 <body class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+
   <!-- HEADER -->
   <header class="border-b border-gray-200/70 bg-white/70 backdrop-blur dark:border-gray-800 dark:bg-gray-900/60">
     <div class="mx-auto max-w-3xl px-4 py-3 grid grid-cols-3 items-center">
-      <!-- Brand clickable -->
+
+      <!-- Brand (home link) -->
       <a id="brandHome" href="#" class="flex items-center gap-2 justify-self-start">
         <div class="h-7 w-7 rounded-xl bg-gray-900 dark:bg-white"></div>
         <div class="font-semibold tracking-tight underline-offset-2 hover:underline">Math Quiz</div>
       </a>
 
-      <!-- Center title -->
+      <!-- Center Title -->
       <div class="justify-self-center text-center font-bold text-base sm:text-lg">
-        Skye Ten Math Quiz
+        Elementary Math Quiz
       </div>
 
-      <!-- Theme -->
+      <!-- Theme toggle -->
       <button id="themeBtn"
         class="justify-self-end text-xs rounded-lg border border-gray-300 px-2 py-1 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
         Toggle theme
@@ -32,33 +35,37 @@
 
   <!-- MAIN -->
   <main class="mx-auto max-w-3xl p-4 md:p-6 lg:p-8">
+
     <!-- SETUP -->
     <section id="setup" class="space-y-6">
+
       <h1 class="text-xl font-semibold tracking-tight">Setup</h1>
+
       <div class="grid gap-4 md:grid-cols-3">
+
         <!-- Operation -->
-        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Operation</label>
-          <select id="op"
-            class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950">
+        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500">Operation</label>
+          <select id="op" class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:bg-gray-950">
             <option value="addition">Addition (+)</option>
             <option value="subtraction">Subtraction (−)</option>
             <option value="multiplication">Multiplication (×)</option>
             <option value="division">Division (÷)</option>
           </select>
         </div>
+
         <!-- Digits -->
-        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Digits per number (1–9)</label>
+        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500">Digits per number (1–9)</label>
           <input id="digits" type="number" min="1" max="9" value="2"
-            class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950" />
-          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">e.g., 2 → two-digit numbers like 22, 33, 14…</p>
+            class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:bg-gray-950" />
         </div>
+
         <!-- Count -->
-        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">How many numbers (1–9)</label>
+        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500">How many numbers</label>
           <input id="count" type="number" min="1" max="9" value="4"
-            class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950" />
+            class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:bg-gray-950" />
         </div>
       </div>
 
@@ -70,59 +77,74 @@
 
     <!-- QUIZ -->
     <section id="quiz" class="space-y-6 hidden">
+
       <div class="flex items-center justify-between">
         <h1 class="text-xl font-semibold tracking-tight">Quiz</h1>
 
-        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-700 dark:text-gray-200">
-          <div class="rounded-lg border border-gray-300 px-2 py-1 dark:border-gray-700">
+        <!-- Stats -->
+        <div class="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-200">
+
+          <div class="rounded-lg border border-gray-300 px-2 py-1">
             <span class="font-medium">Completed:</span> <span id="completed">0</span>
           </div>
-          <div class="rounded-lg border border-gray-300 px-2 py-1 dark:border-gray-700">
+
+          <div class="rounded-lg border border-gray-300 px-2 py-1">
             <span class="font-medium">Avg Time:</span> <span id="avgText">00:00.0</span>
           </div>
-          <div class="rounded-lg border border-gray-300 px-2 py-1 dark:border-gray-700">
+
+          <div class="rounded-lg border border-gray-300 px-2 py-1">
             <span class="font-medium">Time:</span> <span id="timerText">00:00.0</span>
           </div>
+
           <button id="homeBtn"
-            class="ml-2 rounded-xl border border-gray-300 px-3 py-2 text-xs transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
-            <span class="font-semibold">Home</span>
+            class="rounded-xl border border-gray-300 px-3 py-2 text-xs font-semibold transition hover:bg-gray-50">
+            Home
           </button>
+
         </div>
       </div>
 
-      <div class="rounded-2xl border border-gray-200/80 bg-white p-6 text-center text-lg shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 text-center text-lg shadow-sm dark:bg-gray-900">
+
         <div id="expr" class="mb-4 font-mono text-3xl">_</div>
+
         <div class="mx-auto flex max-w-md items-center gap-2">
-          <input id="answerInput" placeholder="Your answer" inputmode="decimal" autofocus
-            class="flex-1 rounded-xl border border-gray-300 bg-white px-3 py-2 text-base outline-none dark:border-gray-700 dark:bg-gray-950" />
+          <input id="answerInput" placeholder="Your answer" inputmode="decimal"
+            class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-base dark:bg-gray-950" />
+
           <button id="checkBtn"
-            class="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 dark:bg-white dark:text-gray-900">
+            class="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white transition dark:bg-white dark:text-gray-900">
             Check
           </button>
+
           <button id="showBtn"
-            class="rounded-xl border border-gray-300 px-3 py-2 text-sm transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+            class="rounded-xl border border-gray-300 px-3 py-2 text-sm transition dark:border-gray-700 dark:hover:bg-gray-800">
             Show
           </button>
         </div>
+
         <div id="status" class="mt-4 text-2xl font-semibold"></div>
       </div>
 
       <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
-        <div class="rounded-xl border border-dashed border-gray-300 p-3 dark:border-gray-800">
+        <div class="rounded-xl border border-dashed border-gray-300 p-3">
           <div>Operation: <b id="opLabel">+</b></div>
-          <div>Digits per number: <b id="digitsLabel">2</b></div>
+          <div>Digits: <b id="digitsLabel">2</b></div>
           <div>Count: <b id="countLabel">4</b></div>
         </div>
+
         <button id="regenBtn"
-          class="rounded-xl border border-gray-300 px-3 py-2 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+          class="rounded-xl border border-gray-300 px-3 py-2 transition dark:border-gray-700 dark:hover:bg-gray-800">
           Regenerate
         </button>
       </div>
+
     </section>
+
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-gray-200/70 p-4 text-center text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400 font-medium">
+  <footer class="border-t border-gray-200/70 p-4 text-center text-xs font-medium text-gray-500">
     Made for Skye Ten
   </footer>
 
@@ -143,13 +165,52 @@
     };
 
     const sym = { addition: '+', subtraction: '−', multiplication: '×', division: '÷' };
-    const PRAISES = ['Good job!', 'Well done!', 'Nice work!', 'Excellent!', 'Great!', 'Awesome!', 'Fantastic!', 'Bravo!', 'Sweet!'];
+    const PRAISES = [
+      'Good job!', 'Well done!', 'Nice work!', 'Excellent!', 'Great!',
+      'Awesome!', 'Fantastic!', 'Bravo!', 'Sweet!'
+    ];
 
-    function clamp(n, min, max) { n = Number(n); return Math.min(max, Math.max(min, Number.isNaN(n) ? min : n)); }
+    function clamp(n, min, max) { n = Number(n); return Math.min(max, Math.max(min, isNaN(n) ? min : n)); }
     function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-    function makeOperand(d) { if (d <= 1) return randInt(1, 9); const min = 10 ** (d - 1), max = 10 ** d - 1; return randInt(min, max); }
+
+    // Integer division mode (clean division)
+    function makeDivisionOperands(digits, count) {
+      const a = makeOperand(digits);
+      const nums = [a];
+      for (let i = 1; i < count; i++) {
+        const divisor = randInt(1, 9);
+        const newA = nums[0] / nums.slice(1).reduce((p, c) => p * c, 1);
+        const nextVal = randInt(1, 9);
+      }
+    }
+
+    function makeOperand(d) {
+      if (d <= 1) return randInt(1, 9);
+      const min = 10 ** (d - 1), max = 10 ** d - 1;
+      return randInt(min, max);
+    }
+
+    // Clean division generator
+    function makeCleanDivisionSet(digits, count) {
+      const first = makeOperand(digits);
+
+      const nums = [first];
+      let current = first;
+
+      for (let i = 1; i < count; i++) {
+        let div;
+        do {
+          div = randInt(1, 9);
+        } while (current % div !== 0);
+
+        nums.push(div);
+        current = current / div;
+      }
+
+      return nums;
+    }
+
     function compute(op, nums) {
-      if (!nums.length) return 0;
       switch (op) {
         case 'addition': return nums.reduce((a, b) => a + b, 0);
         case 'subtraction': return nums.slice(1).reduce((a, b) => a - b, nums[0]);
@@ -157,26 +218,50 @@
         case 'division': return nums.slice(1).reduce((a, b) => a / b, nums[0]);
       }
     }
-    function makeExpr(op, nums) { return nums.join(` ${sym[op]} `) + ' = ?'; }
 
-    // timer
-    function startTimer() { stopTimer(); state.t0 = performance.now(); state.timerId = setInterval(updateTimerUI, 100); updateTimerUI(); }
-    function stopTimer() { if (state.timerId) { clearInterval(state.timerId); state.timerId = null; } }
-    function fmt(ms) { const s = ms / 1000, m = Math.floor(s / 60), r = s - m * 60; return `${String(m).padStart(2,'0')}:${r.toFixed(1).padStart(4,'0')}`; }
-    function updateTimerUI() { $('timerText').textContent = fmt(performance.now() - state.t0); }
-
-    // sounds
-    let audioCtx;
-    function getCtx() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
-    function beep(freq = 880, dur = 0.12, type = 'sine', gain = 0.06, when = 0) {
-      const ctx = getCtx(), t0 = ctx.currentTime + when;
-      const osc = ctx.createOscillator(), g = ctx.createGain();
-      osc.type = type; osc.frequency.setValueAtTime(freq, t0);
-      g.gain.setValueAtTime(gain, t0); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-      osc.connect(g).connect(ctx.destination); osc.start(t0); osc.stop(t0 + dur);
+    function makeExpr(op, nums) {
+      return nums.join(` ${sym[op]} `) + ' = ?';
     }
-    const chimeCorrect = () => { beep(740, .09, 'sine', .08, 0); beep(880, .09, 'sine', .08, .1); beep(988, .12, 'sine', .08, .2); };
-    const chimeWrong = () => { beep(220, .18, 'square', .07, 0); beep(180, .18, 'square', .07, .12); };
+
+    // Timer
+    function startTimer() {
+      stopTimer();
+      state.t0 = performance.now();
+      state.timerId = setInterval(updateTimerUI, 100);
+      updateTimerUI();
+    }
+    function stopTimer() { if (state.timerId) { clearInterval(state.timerId); state.timerId = null; } }
+    function fmt(ms) {
+      const s = ms / 1000,
+        m = Math.floor(s / 60),
+        r = s - m * 60;
+      return `${String(m).padStart(2, '0')}:${r.toFixed(1).padStart(4, '0')}`;
+    }
+    function updateTimerUI() {
+      $('timerText').textContent = fmt(performance.now() - state.t0);
+    }
+
+    // Audio
+    let audioCtx;
+    function ctx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+    function beep(freq, dur, type, gain, delay = 0) {
+      const c = ctx();
+      const t = c.currentTime + delay;
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.frequency.value = freq;
+      o.type = type;
+      g.gain.value = gain;
+      o.connect(g).connect(c.destination);
+      o.start(t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.stop(t + dur);
+    }
+    const chimeCorrect = () => { beep(740, .1, 'sine', .08); beep(880, .1, 'sine', .08, .1); beep(990, .12, 'sine', .08, .2); };
+    const chimeWrong = () => { beep(200, .15, 'square', .07); beep(160, .15, 'square', .07, .12); };
 
     function updateProgressUI() {
       $('completed').textContent = state.completed;
@@ -185,49 +270,89 @@
     }
 
     function generate() {
-      const nums = Array.from({ length: state.count }, (_, i) => {
-        const n = makeOperand(state.digits);
-        return (state.op === 'division' && i > 0 && n === 0) ? 1 : n;
-      });
-      state.nums = nums; state.answer = compute(state.op, nums);
+      let nums;
+
+      if (state.op === 'division') {
+        nums = makeCleanDivisionSet(state.digits, state.count);
+      } else {
+        nums = Array.from({ length: state.count }, () => makeOperand(state.digits));
+      }
+
+      state.nums = nums;
+      state.answer = compute(state.op, nums);
+
       $('expr').textContent = makeExpr(state.op, nums);
-      $('status').textContent = ''; $('status').className = 'mt-4 text-2xl font-semibold';
-      $('answerInput').value = ''; $('answerInput').focus();
+      $('status').textContent = '';
+      $('answerInput').value = '';
+      $('answerInput').focus();
+
       startTimer();
     }
 
-    function finishQuestion() { const e = performance.now() - state.t0; stopTimer(); state.completed++; state.sumTimeMs += e; updateProgressUI(); }
-    const nextQuiz = (d = 1500) => setTimeout(generate, d);
+    function finishQuestion() {
+      const ms = performance.now() - state.t0;
+      stopTimer();
+
+      state.completed++;
+      state.sumTimeMs += ms;
+
+      updateProgressUI();
+    }
+
+    function nextQuiz(delay = 1500) {
+      setTimeout(generate, delay);
+    }
 
     function goHome() {
-      stopTimer(); state.completed = 0; state.sumTimeMs = 0; updateProgressUI();
-      $('quiz').classList.add('hidden'); $('setup').classList.remove('hidden'); $('status').textContent = '';
+      stopTimer();
+      state.completed = 0;
+      state.sumTimeMs = 0;
+      updateProgressUI();
+      $('quiz').classList.add('hidden');
+      $('setup').classList.remove('hidden');
     }
 
     $('startBtn').onclick = () => {
-      state.op = $('op').value; state.digits = clamp($('digits').value, 1, 9); state.count = clamp($('count').value, 1, 9);
-      $('opLabel').textContent = sym[state.op]; $('digitsLabel').textContent = state.digits; $('countLabel').textContent = state.count;
-      state.completed = 0; state.sumTimeMs = 0; updateProgressUI();
-      $('setup').classList.add('hidden'); $('quiz').classList.remove('hidden'); generate();
+      state.op = $('op').value;
+      state.digits = clamp($('digits').value, 1, 9);
+      state.count = clamp($('count').value, 1, 9);
+
+      $('opLabel').textContent = sym[state.op];
+      $('digitsLabel').textContent = state.digits;
+      $('countLabel').textContent = state.count;
+
+      state.completed = 0;
+      state.sumTimeMs = 0;
+      updateProgressUI();
+
+      $('setup').classList.add('hidden');
+      $('quiz').classList.remove('hidden');
+
+      generate();
     };
 
     $('homeBtn').onclick = goHome;
-    $('brandHome').onclick = e => { e.preventDefault(); goHome(); };
+    $('brandHome').onclick = (e) => { e.preventDefault(); goHome(); };
+
     $('regenBtn').onclick = generate;
-    $('answerInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('checkBtn').click(); });
+
+    $('answerInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') $('checkBtn').click();
+    });
 
     $('checkBtn').onclick = () => {
+
       const val = Number($('answerInput').value);
-      let ok;
-      if (state.op === 'division') {
-        const tol = 1e-6 * Math.max(1, Math.abs(state.answer));
-        ok = Math.abs(val - state.answer) <= tol;
-      } else ok = val === state.answer;
+      const ok = (state.op === 'division')
+        ? val === state.answer
+        : val === state.answer;
 
       if (ok) {
         $('status').textContent = PRAISES[randInt(0, PRAISES.length - 1)];
         $('status').className = 'mt-4 text-2xl font-extrabold text-emerald-600';
-        chimeCorrect(); finishQuestion(); nextQuiz(1500);
+        chimeCorrect();
+        finishQuestion();
+        nextQuiz();
       } else {
         $('status').textContent = 'Try again.';
         $('status').className = 'mt-4 text-2xl font-semibold text-red-600';
@@ -239,10 +364,13 @@
       $('answerInput').value = state.answer;
       $('status').textContent = 'Answer shown.';
       $('status').className = 'mt-4 text-2xl font-semibold text-amber-600';
-      chimeWrong(); finishQuestion(); nextQuiz(1500);
+      chimeWrong();
+      finishQuestion();
+      nextQuiz();
     };
 
     $('themeBtn').onclick = () => document.documentElement.classList.toggle('dark');
   </script>
+
 </body>
 </html>
