@@ -3,56 +3,87 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Math Quiz – no build</title>
-  <!-- Tailwind via CDN (no install) -->
+  <title>Elementary Math Quiz</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
   </script>
+
+  <style>
+    .large-text .quiz-number {
+      font-size: 2.8rem;
+    }
+    .large-text .quiz-input {
+      font-size: 1.5rem;
+    }
+    .large-text .quiz-status {
+      font-size: 2.6rem;
+    }
+  </style>
 </head>
+
 <body class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
-  <!-- Header -->
+
   <header class="border-b border-gray-200/70 bg-white/70 backdrop-blur dark:border-gray-800 dark:bg-gray-900/60">
-    <div class="mx-auto max-w-3xl px-4 py-3 flex items-center gap-3">
-      <div class="h-7 w-7 rounded-xl bg-gray-900 dark:bg-white"></div>
-      <div class="font-semibold tracking-tight">Math Quiz</div>
+    <div class="mx-auto max-w-3xl px-4 py-3 grid grid-cols-3 items-center">
+      <a id="brandHome" href="#" class="flex items-center gap-2 justify-self-start">
+        <div class="h-7 w-7 rounded-xl bg-gray-900 dark:bg-white"></div>
+        <div class="font-semibold tracking-tight underline-offset-2 hover:underline">Math Quiz</div>
+      </a>
+
+      <div class="justify-self-center text-center font-bold text-base sm:text-lg">
+        Elementary Math Quiz
+      </div>
+
       <button id="themeBtn"
-        class="ml-auto text-xs rounded-lg border border-gray-300 px-2 py-1 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+        class="justify-self-end text-xs rounded-lg border border-gray-300 px-2 py-1 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
         Toggle theme
       </button>
     </div>
   </header>
 
-  <!-- Main -->
   <main class="mx-auto max-w-3xl p-4 md:p-6 lg:p-8">
-    <!-- Setup -->
+
     <section id="setup" class="space-y-6">
       <h1 class="text-xl font-semibold tracking-tight">Setup</h1>
+
       <div class="grid gap-4 md:grid-cols-3">
-        <!-- Operation -->
-        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Operation</label>
+        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            Operation
+          </label>
           <select id="op"
             class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950">
             <option value="addition">Addition (+)</option>
             <option value="subtraction">Subtraction (−)</option>
             <option value="multiplication">Multiplication (×)</option>
             <option value="division">Division (÷)</option>
+            <option value="mixed">Mixed (+ − × ÷)</option>
           </select>
         </div>
-        <!-- Digits -->
-        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Digits per number (1–9)</label>
+
+        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            Digits per number (1–9)
+          </label>
           <input id="digits" type="number" min="1" max="9" value="2"
             class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950" />
-          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">e.g., 2 → two-digit numbers like 22, 33, 14…</p>
         </div>
-        <!-- Count -->
-        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">How many numbers (1–9)</label>
-          <input id="count" type="number" min="1" max="9" value="4"
+
+        <div class="rounded-2xl border border-gray-200/80 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <label class="mb-1 block text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            How many numbers (1–9)
+          </label>
+          <input id="count" type="number" min="1" max="9" value="2"
             class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950" />
         </div>
+      </div>
+
+      <div class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
+        <input id="largeText" type="checkbox"
+          class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-500 dark:border-gray-700" />
+        <label for="largeText" class="select-none">Large text mode</label>
       </div>
 
       <button id="startBtn"
@@ -61,37 +92,52 @@
       </button>
     </section>
 
-    <!-- Quiz -->
     <section id="quiz" class="space-y-6 hidden">
       <div class="flex items-center justify-between">
         <h1 class="text-xl font-semibold tracking-tight">Quiz</h1>
-        <button id="backBtn"
-          class="rounded-xl border border-gray-300 px-3 py-2 text-xs transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
-          ← Back
-        </button>
+
+        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-700 dark:text-gray-200">
+          <div class="rounded-lg border border-gray-300 px-2 py-1 dark:border-gray-700">
+            <span class="font-medium">Completed:</span> <span id="completed">0</span>
+          </div>
+          <div class="rounded-lg border border-gray-300 px-2 py-1 dark:border-gray-700">
+            <span class="font-medium">Avg Time:</span> <span id="avgText">00:00.0</span>
+          </div>
+          <div class="rounded-lg border border-gray-300 px-2 py-1 dark:border-gray-700">
+            <span class="font-medium">Time:</span> <span id="timerText">00:00.0</span>
+          </div>
+          <button id="homeBtn"
+            class="ml-2 rounded-xl border border-gray-300 px-3 py-2 text-xs font-semibold transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+            Home
+          </button>
+        </div>
       </div>
 
       <div class="rounded-2xl border border-gray-200/80 bg-white p-6 text-center text-lg shadow-sm dark:border-gray-800 dark:bg-gray-900">
-        <div id="expr" class="mb-4 font-mono text-2xl">_</div>
+        <div id="expr" class="quiz-number mb-4 font-mono text-3xl">_</div>
+
         <div class="mx-auto flex max-w-md items-center gap-2">
           <input id="answerInput" placeholder="Your answer" inputmode="decimal"
-            class="flex-1 rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm outline-none dark:border-gray-700 dark:bg-gray-950" />
+            class="quiz-input flex-1 rounded-xl border border-gray-300 bg-white px-3 py-2 text-base outline-none dark:border-gray-700 dark:bg-gray-950" />
+
           <button id="checkBtn"
             class="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 dark:bg-white dark:text-gray-900">
             Check
           </button>
+
           <button id="showBtn"
             class="rounded-xl border border-gray-300 px-3 py-2 text-sm transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
             Show
           </button>
         </div>
-        <div id="status" class="mt-3 text-sm"></div>
+
+        <div id="status" class="quiz-status mt-4 text-2xl font-semibold"></div>
       </div>
 
       <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
         <div class="rounded-xl border border-dashed border-gray-300 p-3 dark:border-gray-800">
           <div>Operation: <b id="opLabel">+</b></div>
-          <div>Digits per number: <b id="digitsLabel">2</b></div>
+          <div>Digits: <b id="digitsLabel">2</b></div>
           <div>Count: <b id="countLabel">4</b></div>
         </div>
         <button id="regenBtn"
@@ -100,22 +146,30 @@
         </button>
       </div>
     </section>
+
   </main>
 
-  <footer class="border-t border-gray-200/70 p-4 text-center text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
-    Simple GitHub Pages app — no build needed
+  <footer class="border-t border-gray-200/70 p-4 text-center text-xs font-medium text-gray-500 dark:border-gray-800 dark:text-gray-400">
+    Made for Skye Ten
   </footer>
 
   <script>
     const $ = (id) => document.getElementById(id);
 
     const state = {
-      op: 'addition',
+      op: 'addition',   // selected mode: addition/subtraction/multiplication/division/mixed
       digits: 2,
-      count: 4,
+      count: 2,
       nums: [],
       answer: 0,
+      completed: 0,
+      sumTimeMs: 0,
+      t0: 0,
+      timerId: null,
+      largeText: false,
     };
+
+    const OPS = ['addition', 'subtraction', 'multiplication', 'division'];
 
     const sym = {
       addition: '+',
@@ -123,6 +177,11 @@
       multiplication: '×',
       division: '÷',
     };
+
+    const PRAISES = [
+      'Good job!', 'Well done!', 'Nice work!', 'Excellent!',
+      'Great!', 'Awesome!', 'Fantastic!', 'Bravo!', 'Sweet!'
+    ];
 
     function clamp(n, min, max) {
       n = Number(n);
@@ -141,6 +200,23 @@
       return randInt(min, max);
     }
 
+    // Clean integer division: a ÷ b ÷ c ... stays integer
+    function makeCleanDivisionSet(digits, count) {
+      // Start with an integer result between 1 and 9
+      let result = randInt(1, 9);
+
+      // Build divisors, all between 1 and 9
+      const divisors = [];
+      for (let i = 1; i < count; i++) {
+        divisors.push(randInt(1, 9));
+      }
+
+      // Multiply result by all divisors to get the initial number
+      const first = divisors.reduce((acc, d) => acc * d, result);
+
+      return [first, ...divisors];
+    }
+
     function compute(op, nums) {
       if (!nums.length) return 0;
       switch (op) {
@@ -155,28 +231,160 @@
       return nums.join(` ${sym[op]} `) + ' = ?';
     }
 
-    function generate() {
-      const nums = Array.from({ length: state.count }, (_, i) => {
-        const n = makeOperand(state.digits);
-        return (state.op === 'division' && i > 0 && n === 0) ? 1 : n;
-      });
-      state.nums = nums;
-      state.answer = compute(state.op, nums);
-      $('expr').textContent = makeExpr(state.op, nums);
-      $('status').textContent = '';
-      $('status').className = 'mt-3 text-sm';
-      $('answerInput').value = '';
+    // Timer helpers
+    function startTimer() {
+      stopTimer();
+      state.t0 = performance.now();
+      state.timerId = setInterval(updateTimerUI, 100);
+      updateTimerUI();
     }
 
-    // UI bindings
+    function stopTimer() {
+      if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+    }
+
+    function fmt(ms) {
+      const s = ms / 1000;
+      const m = Math.floor(s / 60);
+      const r = s - m * 60;
+      return `${String(m).padStart(2, '0')}:${r.toFixed(1).padStart(4, '0')}`;
+    }
+
+    function updateTimerUI() {
+      const ms = performance.now() - state.t0;
+      $('timerText').textContent = fmt(ms);
+    }
+
+    // Audio
+    let audioCtx;
+    function getCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function beep(freq, dur, type, gain, delay = 0) {
+      const ctx = getCtx();
+      const t = ctx.currentTime + delay;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.frequency.value = freq;
+      osc.type = type;
+      g.gain.value = gain;
+      osc.connect(g).connect(ctx.destination);
+      osc.start(t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      osc.stop(t + dur);
+    }
+
+    function chimeCorrect() {
+      beep(740, 0.1, 'sine', 0.08, 0);
+      beep(880, 0.1, 'sine', 0.08, 0.1);
+      beep(1000, 0.12, 'sine', 0.08, 0.2);
+    }
+
+    function chimeWrong() {
+      beep(220, 0.15, 'square', 0.07, 0);
+      beep(180, 0.15, 'square', 0.07, 0.12);
+    }
+
+    function updateProgressUI() {
+      $('completed').textContent = String(state.completed);
+      const avg = state.completed ? state.sumTimeMs / state.completed : 0;
+      $('avgText').textContent = fmt(avg);
+    }
+
+    function applyLargeText() {
+      if (state.largeText) {
+        document.documentElement.classList.add('large-text');
+      } else {
+        document.documentElement.classList.remove('large-text');
+      }
+    }
+
+    function generate() {
+      // Pick operation for this question (if mixed, random)
+      let opForThis = state.op === 'mixed'
+        ? OPS[randInt(0, OPS.length - 1)]
+        : state.op;
+
+      let nums;
+      if (opForThis === 'division') {
+        // Clean integer-only division
+        nums = makeCleanDivisionSet(state.digits, state.count);
+      } else {
+        nums = Array.from({ length: state.count }, () => makeOperand(state.digits));
+        
+        // --- FIX FOR NO NEGATIVE RESULTS ---
+        if (opForThis === 'subtraction') {
+          // If 2 numbers, just make sure the bigger one is first
+          if (nums.length === 2) {
+            nums.sort((a, b) => b - a);
+          } else {
+            // If more than 2 numbers, ensure the first number is >= sum of others
+            // so result is not negative.
+            const sumOfRest = nums.slice(1).reduce((a, b) => a + b, 0);
+            if (nums[0] < sumOfRest) {
+              // Force first number to be the sum + some extra, to ensure positive result
+              nums[0] = sumOfRest + randInt(0, Math.pow(10, state.digits) - 1);
+            }
+          }
+        }
+      }
+
+      state.nums = nums;
+      state.answer = compute(opForThis, nums);
+
+      $('expr').textContent = makeExpr(opForThis, nums);
+      $('status').textContent = '';
+      $('status').className = 'quiz-status mt-4 font-semibold';
+      $('answerInput').value = '';
+      $('answerInput').focus();
+
+      startTimer();
+    }
+
+    function finishQuestion() {
+      const ms = performance.now() - state.t0;
+      stopTimer();
+      state.completed += 1;
+      state.sumTimeMs += ms;
+      updateProgressUI();
+    }
+
+    function nextQuiz(delayMs = 1500) {
+      setTimeout(generate, delayMs);
+    }
+
+    function goHome() {
+      stopTimer();
+      state.completed = 0;
+      state.sumTimeMs = 0;
+      updateProgressUI();
+      $('quiz').classList.add('hidden');
+      $('setup').classList.remove('hidden');
+    }
+
+    // --- Event bindings ---
+
     $('startBtn').onclick = () => {
       state.op = $('op').value;
       state.digits = clamp($('digits').value, 1, 9);
       state.count = clamp($('count').value, 1, 9);
+      state.largeText = $('largeText').checked;
+      applyLargeText();
 
-      $('opLabel').textContent = sym[state.op];
+      $('opLabel').textContent = state.op === 'mixed' ? 'Mixed' : sym[state.op];
       $('digitsLabel').textContent = state.digits;
       $('countLabel').textContent = state.count;
+
+      state.completed = 0;
+      state.sumTimeMs = 0;
+      updateProgressUI();
 
       $('setup').classList.add('hidden');
       $('quiz').classList.remove('hidden');
@@ -184,33 +392,44 @@
       generate();
     };
 
-    $('backBtn').onclick = () => {
-      $('quiz').classList.add('hidden');
-      $('setup').classList.remove('hidden');
+    $('homeBtn').onclick = goHome;
+    $('brandHome').onclick = (e) => {
+      e.preventDefault();
+      goHome();
     };
 
     $('regenBtn').onclick = generate;
 
+    $('answerInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') $('checkBtn').click();
+    });
+
     $('checkBtn').onclick = () => {
       const val = Number($('answerInput').value);
-      let ok;
-      if (state.op === 'division') {
-        const tol = 1e-6 * Math.max(1, Math.abs(state.answer));
-        ok = Math.abs(val - state.answer) <= tol;
+      const ok = (val === state.answer); // integer-only answers
+
+      if (ok) {
+        $('status').textContent = PRAISES[randInt(0, PRAISES.length - 1)];
+        $('status').className = 'quiz-status mt-4 font-extrabold text-emerald-600';
+        chimeCorrect();
+        finishQuestion();
+        nextQuiz();
       } else {
-        ok = val === state.answer;
+        $('status').textContent = 'Try again.';
+        $('status').className = 'quiz-status mt-4 font-semibold text-red-600';
+        chimeWrong();
       }
-      $('status').textContent = ok ? 'Correct!' : 'Try again.';
-      $('status').className = 'mt-3 text-sm ' + (ok ? 'text-emerald-600' : 'text-red-600');
     };
 
     $('showBtn').onclick = () => {
       $('answerInput').value = state.answer;
-      $('status').textContent = 'Shown.';
-      $('status').className = 'mt-3 text-sm text-emerald-600';
+      $('status').textContent = 'Answer shown.';
+      $('status').className = 'quiz-status mt-4 font-semibold text-amber-600';
+      chimeWrong();
+      finishQuestion();
+      nextQuiz();
     };
 
-    // theme toggle
     $('themeBtn').onclick = () => {
       document.documentElement.classList.toggle('dark');
     };
